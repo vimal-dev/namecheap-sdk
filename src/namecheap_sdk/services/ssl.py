@@ -3,7 +3,6 @@ from typing import Dict
 
 from namecheap_sdk.client.client import NamecheapClient
 from namecheap_sdk.schemas.base import APIResponse
-from namecheap_sdk.schemas.response.ssl.create import SSLCreateResult
 from namecheap_sdk.schemas.request.ssl import ActivateCertificateRequest, CreateSSLRequest, EditDCVRequest, GetSSLInfoRequest, ListSSLRequest, ParseCSRRequest, PurchaseMoreSANSRequest, ReSendApproverEmailRequest, ReSendFullfillmentEmailRequest, RenewSSLRequest, RevokeCertificateRequest
 
 
@@ -17,7 +16,7 @@ class SSLService:
     def __init__(self, client: NamecheapClient):
         self.client = client
 
-    def create(self, payload: CreateSSLRequest) -> APIResponse[SSLCreateResult]:
+    def create(self, payload: CreateSSLRequest) -> APIResponse[Dict]:
         """
         Create a new SSL certificate order.
         """
@@ -25,7 +24,7 @@ class SSLService:
             "namecheap.ssl.create",
             payload.model_dump(by_alias=True, exclude_none=True),
         )
-        return APIResponse[SSLCreateResult](**result)
+        return APIResponse[Dict](**result)
     
     def list(self, payload: ListSSLRequest) -> APIResponse[Dict]:
         """
