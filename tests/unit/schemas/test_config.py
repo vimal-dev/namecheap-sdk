@@ -1,5 +1,5 @@
 from namecheap_sdk.schemas.config import NamecheapConfig
-from pydantic import IPvAnyAddress, ValidationError
+from pydantic import ValidationError
 import pytest
 
 
