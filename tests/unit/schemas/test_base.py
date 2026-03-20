@@ -2,6 +2,7 @@ import pytest
 
 from namecheap_sdk.schemas.base import APIResponse
 
+
 # ---------------------------------------------------
 # Test APIResponse Schema
 # ---------------------------------------------------
@@ -10,6 +11,7 @@ def test_config_missing_fields():
 
     with pytest.raises(ValidationError):
         APIResponse()
+
 
 # ---------------------------------------------------
 # Test APIResponse Schema with various status and error configurations
@@ -45,7 +47,12 @@ def test_config_error_response_multiple():
         RequestedCommand="TestCommand",
         Server="TestServer",
         ExecutionTime="0.123",
-        Errors={"Error": [{"Number": "123", "text": "Test error message"}, {"Number": "456", "text": "Another error message"}]},
+        Errors={
+            "Error": [
+                {"Number": "123", "text": "Test error message"},
+                {"Number": "456", "text": "Another error message"},
+            ]
+        },
     )
     assert not response.is_ok
     assert response.is_error

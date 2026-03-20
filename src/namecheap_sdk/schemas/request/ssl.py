@@ -225,55 +225,42 @@ class EditDCVRequest(APIRequest):
 
 
 class DCVMixin(BaseModel):
-
     approver_email: Optional[str] = Field(
-        None,
-        alias="ApproverEmail",
-        description="Email address used for domain control validation"
+        None, alias="ApproverEmail", description="Email address used for domain control validation"
     )
 
     dns_dc_validation: Optional[bool] = Field(
         None,
         alias="DNSDCValidation",
-        description="Sets all domains in certificate requested domains to be validated through CNAME DCV method"
+        description="Sets all domains in certificate requested domains to be validated through CNAME DCV method",
     )
 
     http_dc_validation: Optional[bool] = Field(
         None,
         alias="HTTPDCValidation",
-        description="Sets all domains in certificate request to be validated through HTTP DCV. This method is not available for Wildcard certificates."
+        description="Sets all domains in certificate request to be validated through HTTP DCV. This method is not available for Wildcard certificates.",
     )
 
     dns_names: Optional[List[str]] = Field(
-        None,
-        alias="DNSNames",
-        description="List of domains for multi-domain certificates"
+        None, alias="DNSNames", description="List of domains for multi-domain certificates"
     )
 
     dns_approver_emails: Optional[List[str]] = Field(
-        None,
-        alias="DNSApproverEmails",
-        description="Approver email or DCV method for each domain"
+        None, alias="DNSApproverEmails", description="Approver email or DCV method for each domain"
     )
 
     @model_validator(mode="after")
     def validate_dcv(self):
 
         if self.dns_names and not self.dns_approver_emails:
-            raise ValueError(
-                "DNSApproverEmails must be provided when DNSNames are used"
-            )
+            raise ValueError("DNSApproverEmails must be provided when DNSNames are used")
 
         if self.dns_approver_emails and not self.dns_names:
-            raise ValueError(
-                "DNSNames must be provided when DNSApproverEmails are used"
-            )
+            raise ValueError("DNSNames must be provided when DNSApproverEmails are used")
 
         if self.dns_names and self.dns_approver_emails:
             if len(self.dns_names) != len(self.dns_approver_emails):
-                raise ValueError(
-                    "DNSNames and DNSApproverEmails must have the same length"
-                )
+                raise ValueError("DNSNames and DNSApproverEmails must have the same length")
 
         return self
 
@@ -313,24 +300,44 @@ class ActivateReissueDVRequest(BaseActivateCertificateRequest):
 class ActivateReissueOVRequest(BaseActivateCertificateRequest):
     certificate_type: Literal["OV"]
 
-    organization_name: str = Field(..., alias="AdminOrganizationName", description="Organization name for the SSL certificate")
-    organization_department: str | None = Field(None, alias="OrganizationDepartment", description="Organization department for the SSL certificate")
+    organization_name: str = Field(
+        ..., alias="AdminOrganizationName", description="Organization name for the SSL certificate"
+    )
+    organization_department: str | None = Field(
+        None,
+        alias="OrganizationDepartment",
+        description="Organization department for the SSL certificate",
+    )
 
 
 class ActivateReissueEVRequest(BaseActivateCertificateRequest):
     certificate_type: Literal["EV"]
-    company_incorporation_country: str = Field(..., alias="CompanyIncorporationCountry", description="Country where the company is incorporated")
-    company_registration_number: str = Field(..., alias="CompanyRegistrationNumber", description="Company registration number")
-    organization_rep_first_name: str = Field(..., alias="OrganizationRepFirstName", description="First name of the organization representative")
-    organization_rep_last_name: str = Field(..., alias="OrganizationRepLastName", description="Last name of the organization representative")
-    organization_rep_phone: str = Field(..., alias="OrganizationRepPhone", description="Phone number of the organization representative")
+    company_incorporation_country: str = Field(
+        ...,
+        alias="CompanyIncorporationCountry",
+        description="Country where the company is incorporated",
+    )
+    company_registration_number: str = Field(
+        ..., alias="CompanyRegistrationNumber", description="Company registration number"
+    )
+    organization_rep_first_name: str = Field(
+        ...,
+        alias="OrganizationRepFirstName",
+        description="First name of the organization representative",
+    )
+    organization_rep_last_name: str = Field(
+        ...,
+        alias="OrganizationRepLastName",
+        description="Last name of the organization representative",
+    )
+    organization_rep_phone: str = Field(
+        ...,
+        alias="OrganizationRepPhone",
+        description="Phone number of the organization representative",
+    )
 
 
 ActivateCertificateRequest = Annotated[
-    Union[
-        ActivateReissueDVRequest,
-        ActivateReissueOVRequest,
-        ActivateReissueEVRequest
-    ],
-    Field(discriminator="certificate_type")
+    Union[ActivateReissueDVRequest, ActivateReissueOVRequest, ActivateReissueEVRequest],
+    Field(discriminator="certificate_type"),
 ]

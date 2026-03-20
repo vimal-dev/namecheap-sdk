@@ -35,6 +35,7 @@ VALID_XML = """<?xml version="1.0" encoding="UTF-8"?>
 # SUCCESS CASE
 # ---------------------------------------------------
 
+
 def test_call_success(config):
     def handler(request: httpx.Request):
         assert request.method == "GET"
@@ -46,9 +47,7 @@ def test_call_success(config):
         return httpx.Response(200, text=VALID_XML)
 
     client = httpx.Client(
-        base_url=config.endpoint,
-        timeout=config.timeout,
-        transport=mock_transport(handler)
+        base_url=config.endpoint, timeout=config.timeout, transport=mock_transport(handler)
     )
     nc = NamecheapClient(config, client=client)
 
@@ -62,14 +61,13 @@ def test_call_success(config):
 # HTTP ERROR
 # ---------------------------------------------------
 
+
 def test_http_error(config):
     def handler(request: httpx.Request):
         return httpx.Response(500, text="Server Error")
 
     client = httpx.Client(
-        base_url=config.endpoint,
-        timeout=config.timeout,
-        transport=mock_transport(handler)
+        base_url=config.endpoint, timeout=config.timeout, transport=mock_transport(handler)
     )
     nc = NamecheapClient(config, client=client)
 
@@ -81,14 +79,13 @@ def test_http_error(config):
 # INVALID XML
 # ---------------------------------------------------
 
+
 def test_invalid_xml(config):
     def handler(request: httpx.Request):
         return httpx.Response(200, text="INVALID_XML")
 
     client = httpx.Client(
-        base_url=config.endpoint,
-        timeout=config.timeout,
-        transport=mock_transport(handler)
+        base_url=config.endpoint, timeout=config.timeout, transport=mock_transport(handler)
     )
     nc = NamecheapClient(config, client=client)
 
@@ -100,6 +97,7 @@ def test_invalid_xml(config):
 # MISSING ApiResponse
 # ---------------------------------------------------
 
+
 def test_missing_api_response(config):
     bad_xml = """<Invalid></Invalid>"""
 
@@ -107,9 +105,7 @@ def test_missing_api_response(config):
         return httpx.Response(200, text=bad_xml)
 
     client = httpx.Client(
-        base_url=config.endpoint,
-        timeout=config.timeout,
-        transport=mock_transport(handler)
+        base_url=config.endpoint, timeout=config.timeout, transport=mock_transport(handler)
     )
     nc = NamecheapClient(config, client=client)
 
@@ -120,6 +116,7 @@ def test_missing_api_response(config):
 # ---------------------------------------------------
 # PARAM MERGING
 # ---------------------------------------------------
+
 
 def test_params_merging(config):
     def handler(request: httpx.Request):
@@ -135,9 +132,7 @@ def test_params_merging(config):
         return httpx.Response(200, text=VALID_XML)
 
     client = httpx.Client(
-        base_url=config.endpoint,
-        timeout=config.timeout,
-        transport=mock_transport(handler)
+        base_url=config.endpoint, timeout=config.timeout, transport=mock_transport(handler)
     )
     nc = NamecheapClient(config, client=client)
 
@@ -148,6 +143,7 @@ def test_params_merging(config):
 # EMPTY PARAMS
 # ---------------------------------------------------
 
+
 def test_call_without_params(config):
     def handler(request: httpx.Request):
         params = request.url.params
@@ -156,9 +152,7 @@ def test_call_without_params(config):
         return httpx.Response(200, text=VALID_XML)
 
     client = httpx.Client(
-        base_url=config.endpoint,
-        timeout=config.timeout,
-        transport=mock_transport(handler)
+        base_url=config.endpoint, timeout=config.timeout, transport=mock_transport(handler)
     )
     nc = NamecheapClient(config, client=client)
 
@@ -170,6 +164,7 @@ def test_call_without_params(config):
 # ---------------------------------------------------
 # CLOSE CLIENT
 # ---------------------------------------------------
+
 
 def test_close(config):
     client = httpx.Client()

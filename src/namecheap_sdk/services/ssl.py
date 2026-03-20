@@ -1,9 +1,20 @@
-
 from typing import Dict
 
 from namecheap_sdk.client.client import NamecheapClient
 from namecheap_sdk.schemas.base import APIResponse
-from namecheap_sdk.schemas.request.ssl import ActivateCertificateRequest, CreateSSLRequest, EditDCVRequest, GetSSLInfoRequest, ListSSLRequest, ParseCSRRequest, PurchaseMoreSANSRequest, ReSendApproverEmailRequest, ReSendFullfillmentEmailRequest, RenewSSLRequest, RevokeCertificateRequest
+from namecheap_sdk.schemas.request.ssl import (
+    ActivateCertificateRequest,
+    CreateSSLRequest,
+    EditDCVRequest,
+    GetSSLInfoRequest,
+    ListSSLRequest,
+    ParseCSRRequest,
+    PurchaseMoreSANSRequest,
+    ReSendApproverEmailRequest,
+    ReSendFullfillmentEmailRequest,
+    RenewSSLRequest,
+    RevokeCertificateRequest,
+)
 
 
 class SSLService:
@@ -25,14 +36,14 @@ class SSLService:
             payload.model_dump(by_alias=True, exclude_none=True),
         )
         return APIResponse[Dict](**result)
-    
+
     def list(self, payload: ListSSLRequest) -> APIResponse[Dict]:
         """
         Get a list of SSL certificates associated with the account.
         """
         result = self.client.call(
             "namecheap.ssl.getList",
-             payload.model_dump(by_alias=True, exclude_none=True),
+            payload.model_dump(by_alias=True, exclude_none=True),
         )
         return APIResponse[Dict](**result)
 
@@ -67,7 +78,9 @@ class SSLService:
         )
         return APIResponse[Dict](**result)
 
-    def re_send_fullfillment_email(self, payload: ReSendFullfillmentEmailRequest) -> APIResponse[Dict]:
+    def re_send_fullfillment_email(
+        self, payload: ReSendFullfillmentEmailRequest
+    ) -> APIResponse[Dict]:
         """
         Resend the fullfillment email for the requested SSL certificate.
         """
@@ -124,7 +137,7 @@ class SSLService:
             payload.model_dump(by_alias=True, exclude_none=True),
         )
         return APIResponse[Dict](**result)
-    
+
     def reissue(self, payload: ActivateCertificateRequest) -> APIResponse[Dict]:
         """Reissue the requested SSL certificate."""
         result = self.client.call(

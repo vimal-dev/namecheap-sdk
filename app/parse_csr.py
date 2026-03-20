@@ -1,16 +1,16 @@
-
 from pprint import pp
 
 from app.dependencies import get_namecheap_ssl_client
 from namecheap_sdk.schemas.request.ssl import ParseCSRRequest, CertificateProductEnum
 
+
 def parse_csr():
-    '''
+    """
     Parse the provided CSR and return the details.
-    '''
+    """
     ssl_client = get_namecheap_ssl_client()
     request = ParseCSRRequest(
-        CertificateType=CertificateProductEnum.POSITIVE_SSL, 
+        CertificateType=CertificateProductEnum.POSITIVE_SSL,
         csr="""-----BEGIN CERTIFICATE REQUEST-----
 MIIFGzCCAwMCAQAwgaUxEjAQBgNVBAgMCVJhamFzdGhhbjEsMCoGA1UECgwjQ2xv
 dWRUZWNodGlxIFRlY2hub2xvZ2llcyBQdnQuIGx0ZC4xDzANBgNVBAcMBkphaXB1
@@ -40,7 +40,7 @@ u0WSMNN+o9aF7APt9ixnzSxO+SZHq+3QR5tJzDv6livj6eqzEFzMutS4zvYo3Vo3
 VTj1wbc1eZMqrI5sSb0EEXIpS+WHW8BVIESkmm9oL/gcjzSccv66oVe6bCpk7EWy
 qXGa7A7WtX3PKGoCReZU5Vbl/xjN+76oFPQFwKmEmKZyJqVh3M7c7q0FVqCJsD6u
 TYdYYkW8VQ0glbyjzsF1
------END CERTIFICATE REQUEST-----"""
+-----END CERTIFICATE REQUEST-----""",
     )
     response = ssl_client.parse_csr(request)
     return response
